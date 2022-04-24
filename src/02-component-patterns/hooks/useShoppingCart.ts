@@ -15,32 +15,15 @@ export const useShoppingCart = () => {
   }) => {
     console.log("onProductCountChange");
     setShoppingCart((oldShoppingCard) => {
-      const productInCart: ProductInCart = oldShoppingCard[product.id] || {
-        ...product,
-        count: 0,
-      };
-
-      if (Math.max(productInCart.count + count, 0) > 0) {
-        productInCart.count += count;
-
-        return {
-          ...oldShoppingCard,
-          [product.id]: productInCart,
-        };
+      if (count === 0) {
+        const { [product.id]: toDelete, ...rest } = oldShoppingCard;
+        return { ...rest };
       }
 
-      const { [product.id]: toDelete, ...rest } = oldShoppingCard;
-      return { ...rest };
-
-      // if (count === 0) {
-      //   const { [product.id]: toDelete, ...rest } = oldShoppingCard;
-      //   return { ...rest };
-      // }
-
-      // return {
-      //   ...oldShoppingCard,
-      //   [product.id]: { ...product, count },
-      // };
+      return {
+        ...oldShoppingCard,
+        [product.id]: { ...product, count },
+      };
     });
   };
 
